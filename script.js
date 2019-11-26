@@ -64,3 +64,57 @@ function searchButtonClicked(){
     //clear the value once the search is activated
     searchInput.val("");        
 }
+
+function getWeather(city){
+    addedCity = city; 
+    let queryURLCurrent = "";
+    let queryURLForecast = "";
+
+    if(city.country == null){
+        queryURLCurrent = "https://api.openweathermap.org/data/2.5/weather?q="+city.city+"&units=metric&appid="+APIKey;
+        queryURLForecast = "https://api.openweathermap.org/data/2.5/forecast?q="+city.city+"&units=metric&appid="+APIKey;
+    }else{        
+        queryURLCurrent = "https://api.openweathermap.org/data/2.5/weather?q="+city.city+","+city.country+"&units=metric&appid="+APIKey;
+        queryURLForecast = "https:////api.openweathermap.org/data/2.5/forecast?q="+city.city+","+city.country+"&units=metric&appid="+APIKey;
+    }
+    
+    performAPIGETCall(queryURLCurrent, buildCurrentWeather);
+    performAPIGETCall(queryURLForecast, buildForecastWeather);    
+}
+
+function buildCurrentWeather(data){
+    //console.log(data);
+    if(data != null){
+        console.log(units,metricUnits,data.wind.speed);
+        currentWeatherDiv.empty();
+        currentWeatherDiv.append(
+                            $("<h3>").text(correctCase(data.name)+", "
+                                    +data.sys.country.toUpperCase())
+                            ,$("<h4>").text(moment.unix(data.dt).format("dddd, MMM Do YYYY"))
+                            .append($("<img>").attr("src", "https://openweathermap.org/img/wn/"+data.weather[0].icon+"@2x.png")
+                                                .addClass("currentWeatherImg")
+                                                .attr("data-toggle","tooltip")
+                                                .attr("data-placement","right")                                                      
+                                                .attr("title",data.weather[0].description)
+                                                .tooltip())
+                            ,$("<p>").text("Temperature: " + Math.round(data.main.temp) + "°"+units.deg)
+                            ,$("<p>").text("Humidity: "+ data.main.humidity+"%")
+                            ,$("<p>").text("Wind Speed: "+(Math.round((units === metricUnits)?(data.wind.speed*3.6):data.wind.speed))+" "+units.speed)
+                            ,$("<p>").text("UV Index: ").append($("<div>").attr("id", "UVIndex"))
+        );
+
+        let UVqueryURL = "https://api.openweathermap.org/data/2.5/uvi?appid="+APIKey+"&lat="+data.coord.lat+"&lon="+data.coord.lon;
+        
+        performAPIGETCall(UVqueryURL,buildUV);
+
+        if(addedCity.country == null){
+            addedCity.country = data.sys.country;
+            addedCity.city = data.name;
+            addNewSearch(addedCity);
+            addedCity = null;
+        }
+        
+    }else{
+        alert("Something went wrong getting current weather data, please try again");
+    }            
+}
