@@ -13,3 +13,28 @@ var addedCity = newCity();
 const metricUnits = {deg:"C", speed:"KPH"};
 const impUnits = {deg:"F",speed:"MPH"};
 var units = metricUnits;
+
+function init(){
+
+    //enable tooltips
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+    
+
+    buildSearchHistory();
+
+    if(storedSearches != null){
+        getWeather(storedSearches[0]);
+    }
+
+    searchInput.on("keyup", function (event){
+         
+        if (event.key === "Enter") {
+            searchButtonClicked();
+        }
+    });
+
+    searchButton.on("click", searchButtonClicked );
+    clearBtn.on("click",clearSearches);    
+}
