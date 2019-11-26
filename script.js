@@ -38,3 +38,29 @@ function init(){
     searchButton.on("click", searchButtonClicked );
     clearBtn.on("click",clearSearches);    
 }
+function buildSearchHistory(){
+    
+    searchesDiv.empty();
+    
+    if(storedSearches != null){
+        storedSearches.forEach(element => {
+            searchesDiv.append(
+                $("<button>")
+                    .text(correctCase(element.city) +", "+element.country.toUpperCase())
+                    .addClass("btn btnCitySearch")
+                    .on("click", function (){                        
+                        getWeather(element);
+                    })
+            );
+        });
+    }
+}
+
+function searchButtonClicked(){
+    
+    let cityVal = searchInput.val().trim();
+    let city = newCity(cityVal, null);       
+    getWeather(city);
+    //clear the value once the search is activated
+    searchInput.val("");        
+}
