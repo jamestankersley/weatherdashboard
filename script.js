@@ -118,3 +118,13 @@ function buildCurrentWeather(data){
         alert("Something went wrong getting current weather data, please try again");
     }            
 }
+
+function buildUV(data){
+    if(data != null){
+
+        let UVIndex = data.value;
+        let UVDiv = $("#UVIndex").attr("data-toggle","tooltip");
+        let severity = "";
+        let UVbg = null;
+        let textColor = null;
+        let borderColor = null;
