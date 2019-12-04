@@ -202,3 +202,21 @@ function parseDailyData(data){
     }
     return dailyData;
 }
+
+function buildForecastCard(day){
+    let dayCard = $("<div>").attr("class","dayCard col-12 col-md-5 col-lg-2");
+
+        dayCard.append(
+            $("<label>").text(getDayOfWeek(day.date)),
+            $("<label>").text(moment.unix(day.date).format("MMM Do YYYY")),                        
+            $("<img>").attr("src","https://openweathermap.org/img/wn/"+day.icon+".png")
+                        .attr("data-toggle","tooltip")
+                        .attr("data-placement","right")
+                        .attr("title",day.description)
+                        .tooltip(),
+            $("<p>").text("Temperature: " + Math.round(day.temp) + "°"+units.deg),
+            $("<p>").text("Humidity: "+ day.humidity+"%")
+        );
+
+    return dayCard;
+}
