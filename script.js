@@ -128,3 +128,77 @@ function buildUV(data){
         let UVbg = null;
         let textColor = null;
         let borderColor = null;
+
+         //determine severity of UV Index for color coding
+         if(UVIndex < 2){
+            UVbg = "green";
+            textColor = "white";
+            severity = "Low";
+            borderColor = "rgb(16, 129, 16)";
+        }else if (UVIndex < 6){
+            UVbg = "yellow";
+            severity = "Moderate";
+            borderColor = "rgb(245, 245, 56)";
+        }else if (UVIndex < 8){
+            UVbg = "orange";
+            severity = "High";
+            borderColor = "rgb(255, 184, 51)";
+        }else if (UVIndex < 11){
+            UVbg = "red";
+            textColor = "white";
+            severity = "Very high";
+            borderColor = "rgb(255, 54, 54)";
+        }else{
+            UVbg = "violet";
+            severity = "Extreme";
+            borderColor = "rgb(236, 151, 236)";
+        }
+        UVDiv.attr("title",severity)
+             .attr("data-placement","right")  
+             .tooltip()
+             .css("backgroundColor",UVbg)
+             .css("borderColor",borderColor);
+        
+        if(textColor != null){
+            UVDiv.css("color",textColor);
+        }
+        UVDiv.text(UVIndex);
+    }else{
+        alert("Something went wrong getting UV data, please try again");
+    }
+}
+
+function buildForecastWeather(data){
+    if(data != null){
+        
+        forecastDiv.empty();
+        
+        let dayCardContainer = $("<div>").attr("id","dayCardContainer").addClass("row")
+
+        forecastDiv.append($("<h3>").text("5-Day Forecast:"),dayCardContainer);        
+        dailyData = parseDailyData(data);        
+
+        dailyData.forEach(element => {
+            dayCardContainer.append(buildForecastCard(element));
+        });
+        
+    }else{
+        alert("Something went wrong getting forecast data, please try again");
+    }
+    //for now arbitrarily starts at the index 5/40 of returned results as it is in 3 hour intervals
+function parseDailyData(data){
+
+    let dailyData = [];
+    //increments by 8 due to 8 * 3 hours = 1 day
+    for(var i = 5; i < data.list.length; i += 8){
+        
+        let dataList = data.list[i];
+
+        dailyData.push(newDay(dataList.dt,
+                            dataList.weather[0].icon,
+                            dataList.weather[0].description,
+                            dataList.main.temp,
+                            dataList.main.humidity));
+    }
+    return dailyData;
+}
