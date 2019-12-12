@@ -14,6 +14,7 @@ const metricUnits = {deg:"C", speed:"KPH"};
 const impUnits = {deg:"F",speed:"MPH"};
 var units = metricUnits;
 
+
 function init(){
 
     //enable tooltips
@@ -29,7 +30,7 @@ function init(){
     }
 
     searchInput.on("keyup", function (event){
-         
+         // "13" represents the enter key
         if (event.key === "Enter") {
             searchButtonClicked();
         }
@@ -38,6 +39,7 @@ function init(){
     searchButton.on("click", searchButtonClicked );
     clearBtn.on("click",clearSearches);    
 }
+
 function buildSearchHistory(){
     
     searchesDiv.empty();
@@ -128,9 +130,9 @@ function buildUV(data){
         let UVbg = null;
         let textColor = null;
         let borderColor = null;
-
-         //determine severity of UV Index for color coding
-         if(UVIndex < 2){
+        
+        //determine severity of UV Index for color coding
+        if(UVIndex < 2){
             UVbg = "green";
             textColor = "white";
             severity = "Low";
@@ -185,7 +187,8 @@ function buildForecastWeather(data){
     }else{
         alert("Something went wrong getting forecast data, please try again");
     }
-    //for now arbitrarily starts at the index 5/40 of returned results as it is in 3 hour intervals
+}
+//for now arbitrarily starts at the index 5/40 of returned results as it is in 3 hour intervals
 function parseDailyData(data){
 
     let dailyData = [];
@@ -219,4 +222,57 @@ function buildForecastCard(day){
         );
 
     return dayCard;
+}
+
+function addNewSearch(city){
+    //console.log(city, storedSearches);
+    if(storedSearches == null){
+        storedSearches = [];
+    }
+    //put the newest city at the top
+    storedSearches.unshift(city);
+    
+    localStorage.setItem(lsKey,JSON.stringify(storedSearches));
+
+    buildSearchHistory();
+}
+
+function clearSearches(){
+
+    localStorage.removeItem(lsKey);
+    searchesDiv.empty();
+    storedSearches = null;
+}
+//get started
+init();
+
+//helper functions
+function getDayOfWeek(date){
+   return moment.unix(parseInt(date)).format('dddd');
+}
+
+function correctCase(str){
+    return str.toLowerCase().replace(/\b\w/g, l => l.toUpperCase());
+}
+
+function getStoredSearches(){
+    return JSON.parse(localStorage.getItem(lsKey));
+}
+
+function newCity(city, country){
+    return {city:city,country:country};
+}
+
+function performAPIGETCall(queryURL, callbackFunction){    
+    $.ajax({url: queryURL, method: "GET"}).then(function(response){
+        callbackFunction(response);
+    });   
+}
+
+function testFunction(mFunction,...args){   
+    console.log(mFunction(...args));
+ }
+
+function newDay(date,icon,description,temp,humidity){
+    return {date: date,icon: icon,description: description, temp: temp, humidity: humidity};
 }
