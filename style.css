@@ -88,4 +88,66 @@ input{
     border-radius: 5px;
     color: white;
 }
+.clearBtn{
+    margin-left: 5px;
+    background-color: rgb(189, 63, 63);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+#mainContent{
+    margin-left:320px;
+    margin-right:0;
+    padding-right:0;
+    top:78px;
+}
+#currentWeather{
+    margin:10px 0 10px 10px;
+    padding: 20px 0 20px 20px;
+    border: 1px solid #777777;
+    border-right: unset;
+    border-radius: 5px 0 0 5px;
+}
+.currentWeatherImg{
+    height:75px; 
+}
 
+#UVIndex{
+    display: inline;
+    padding:5px;
+    border: 1px solid;
+    border-radius: 4px; 
+
+}
+#forecast > h3{
+    padding-left: 10px;
+}
+#dayCardContainer{    
+    justify-content: center;
+    flex-wrap:wrap;
+    padding-right: 15px;
+    align-content: stretch;
+   
+}
+.dayCard{
+    padding: 10px;
+    background-color: lightblue;
+    margin: 10px;
+    border-radius:5px;
+    
+}
+.dayCard > *{
+    margin-bottom:10px; 
+    display: block;
+}
+.dayCard > img{
+    margin:-10px 0 0 0;
+}
+@media (max-width:550px){
+    #searchPanel{
+        width:230px;
+    }
+    #mainContent{
+        margin-left:230px;
+    }
+}
