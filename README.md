@@ -2,7 +2,7 @@
 # Description
 This is a web app that uses the OpenWeather API to perform simple weather condition searches for cities showing the current conditions as well as the 5 day forcast. HTML and CSS used to structure and style the page. 
 
-Deployment URL: https://ana199816.github.io/homework-06/
+Deployment URL:https://jamestankersley.github.io/weatherdashboard/
 
 
 # Usage
