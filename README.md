@@ -13,4 +13,4 @@ Use the input field to search for a city. Searching causes the specified city's 
 
 There is also a button to clear the search history.
 
-<img src="images/weather1.png">
+<img src="/snippingtoolweather.JPG">
